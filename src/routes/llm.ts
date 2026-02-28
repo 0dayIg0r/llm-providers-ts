@@ -8,27 +8,32 @@ import {
   createOllamaClient,
 } from "../services/index.js";
 import { generateText } from "ai";
+import { bookFinder } from "../services/openai.service.js";
 
 const router = express.Router();
 
 // Route para OpenAI
 router.get("/openai", async (req, res) => {
   const client = createOpenAIClient();
-  const response = await client.responses.create({
-    model: "gpt-4o",
-    input: [
-      {
-        role: "system",
-        content:
-          "Você é um assistente de programação e evita ao máximo responder errado.",
-      },
-      {
-        role: "user",
-        content: "Crie uma função com Js pra mim!",
-      },
-    ],
-  });
-  res.json({ output: response.output_text });
+
+  const book = await bookFinder("um livro sobre inteligência artificial para iniciantes");
+  res.json({ book });   
+
+//   const response = await client.responses.create({
+//     model: "gpt-4o",
+//     input: [
+//       {
+//         role: "system",
+//         content:
+//           "Você é um assistente de programação e evita ao máximo responder errado.",
+//       },
+//       {
+//         role: "user",
+//         content: "Crie uma função com Js pra mim!",
+//       },
+//     ],
+//   });
+//   res.json({ output: response.output_text });
 });
 
 // Route para Anthropic (Claude)
