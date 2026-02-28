@@ -8,25 +8,31 @@ import {
   createOllamaClient,
 } from "../services/index.js";
 import { generateText } from "ai";
-import { bookFinder } from "../services/openai.service.js";
+import { bookFinder, imageAnalyzer } from "../services/openai.service.js";
 
 const router = express.Router();
 
 // Route para OpenAI
 router.get("/openai", async (req, res) => {
-  const client = createOpenAIClient();
 
-  const book = await bookFinder(
-    "um livro sobre inteligência artificial para iniciantes",
-  );
+const imageUrl = "https://static.vecteezy.com/ti/fotos-gratis/t2/36324708-ai-gerado-cenario-do-uma-tigre-caminhando-dentro-a-floresta-foto.jpg";
+const imageDescription = await imageAnalyzer(imageUrl);
 
-  if (!book) {
-    res.json({
-      message: "Nenhum livro encontrado para a descrição fornecida.",
-    });
-    return;
-  }
-  res.json({ book });
+res.status(200).json({ description: imageDescription });
+
+//   const client = createOpenAIClient();
+
+//   const book = await bookFinder(
+//     "um livro sobre inteligência artificial para iniciantes",
+//   );
+
+//   if (!book) {
+//     res.json({
+//       message: "Nenhum livro encontrado para a descrição fornecida.",
+//     });
+//     return;
+//   }
+//   res.json({ book });
 
   //   const response = await client.responses.create({
   //     model: "gpt-4o",

@@ -39,3 +39,27 @@ export const bookFinder = async (search: string) => {
 
   return response.output_parsed ?? null
 };
+
+
+
+export const imageAnalyzer =  async (imageUrl: string) => {
+  const client = createOpenAIClient();
+
+  const response = await client.responses.parse({
+    model: "gpt-4o-mini",
+    input: [
+      {
+        role: "system",
+        content:
+          "Você é um assistente de análise de imagens. Analise a imagem fornecida e descreva seu conteúdo.",
+      },
+      {
+        role: "user",
+        content: `Analise a seguinte imagem: ${imageUrl}`,
+      },
+    ],
+    response_format: zodTextFormat(z.string(), 'event'),
+  });
+
+  return response.output_parsed ?? null
+}
