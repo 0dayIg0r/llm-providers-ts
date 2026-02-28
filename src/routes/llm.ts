@@ -16,24 +16,33 @@ const router = express.Router();
 router.get("/openai", async (req, res) => {
   const client = createOpenAIClient();
 
-  const book = await bookFinder("um livro sobre inteligência artificial para iniciantes");
-  res.json({ book });   
+  const book = await bookFinder(
+    "um livro sobre inteligência artificial para iniciantes",
+  );
 
-//   const response = await client.responses.create({
-//     model: "gpt-4o",
-//     input: [
-//       {
-//         role: "system",
-//         content:
-//           "Você é um assistente de programação e evita ao máximo responder errado.",
-//       },
-//       {
-//         role: "user",
-//         content: "Crie uma função com Js pra mim!",
-//       },
-//     ],
-//   });
-//   res.json({ output: response.output_text });
+  if (!book) {
+    res.json({
+      message: "Nenhum livro encontrado para a descrição fornecida.",
+    });
+    return;
+  }
+  res.json({ book });
+
+  //   const response = await client.responses.create({
+  //     model: "gpt-4o",
+  //     input: [
+  //       {
+  //         role: "system",
+  //         content:
+  //           "Você é um assistente de programação e evita ao máximo responder errado.",
+  //       },
+  //       {
+  //         role: "user",
+  //         content: "Crie uma função com Js pra mim!",
+  //       },
+  //     ],
+  //   });
+  //   res.json({ output: response.output_text });
 });
 
 // Route para Anthropic (Claude)
